@@ -1,18 +1,31 @@
-NODE_ENV = development
+NODE_ENV = production
 
-HOSTNAME = localhost
-
-#Place files in /certs directory
-X509_CERT = localhost.crt
-X509_KEY = localhost.key
+HOSTNAME = 
 
 #PORT is HTTPS, HTTP_PORT is HTTP
 #If commented out, defaults to HTTP: 8000, HTTPS: 3000
-#HTTPS_PORT = 443
+HTTPS_PORT = 443
 #HTTP_PORT = 80
 
-#Redis settings (password generally only needed for remote instances)
-REDIS_HOST = 127.0.0.1
-REDIS_PORT = 6379
-REDIS_DB = 0
-#REDIS_PASSWORD = password
+# If JWT are disabled or JWT are optional but not provided, default rates will be used. Set "#" before the one that is not used.
+# Rate "0.01" means +1%, amount "1" means +1 BUX fixed.
+DEFAULT_RATE = 0.01 
+#DEFAULT_AMOUNT = 1
+
+JWT_ENABLED = false
+JWT_OPTIONAL = false
+#JWT_PUBKEY = 
+
+URL_UPSTREAM = https://relay1.cmpct.org/v1
+JWT_UPSTREAM =
+
+# Replace with your addresses, add more if needed and add shares up to equal 1. The share "50% of fees" could be set as: 0.5 or 1/2. 
+ADDRESS_1 = etoken:qz92ejgtzd0wstr6qjjy6cef533635cxjufj4q08qw
+SHARE_1 = 1
+# ADDRESS_2 = 
+# SHARE_2 = 
+# ...
+
+# replace domain name
+SSL_PRIVKEY = /etc/letsencrypt/live/relay1.cmpct.org/privkey.pem
+SSL_FULLCHAIN = /etc/letsencrypt/live/relay1.cmpct.org/fullchain.pem

@@ -3,10 +3,8 @@
 const express = require('express')
 const router = express.Router()
 
-const indexRouter = require('./indexRouter')
-const docsRouter = require('./docsRouter')
+const relayRouter = require('./relayRouter')
 
-router.use('/', indexRouter)
-router.use('/docs', docsRouter)
+router.use('/v1/', relayRouter)
 
 module.exports = router

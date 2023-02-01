@@ -8,33 +8,38 @@ require('dotenv').config();
 var app = require('../app');
 var debug = require('debug')('express-project:server');
 var https = require('https');
+var http = require('http');
 var fs = require('fs')
 const path = require('path');
 const WebSocket = require('ws');
 const wsController = require('../controllers/wsController')
+
 
 /**
  * Get port from environment and store in Express.
  */
 
 var port = normalizePort(process.env.HTTPS_PORT || '3000');
-var httpPort = normalizePort(process.env.HTTP_PORT || '8000');
 app.set('port', port);
+// var httpPort = normalizePort(process.env.HTTP_PORT || '8000');
+// app.set('port', httpPort);
 
 /**
  * Create HTTP server.
  */
 
 const httpsOptions = {
-  key: fs.readFileSync(path.resolve(__dirname, '../certs/' + process.env.X509_KEY)),
-  cert: fs.readFileSync(path.resolve(__dirname, '../certs/' + process.env.X509_CERT))
-}
+  key: fs.readFileSync(process.env.SSL_PRIVKEY),
+  cert: fs.readFileSync(process.env.SSL_FULLCHAIN)
+};
 
 var server = https.createServer(httpsOptions, app);
+// var server = http.createServer(app);
 
 /**
  * Handle Websocket Connections
  */
+
 const wss = new WebSocket.Server({ server });
 wss.on('connection', wsController);
 
@@ -52,16 +57,16 @@ console.log("Starting Express Server")
  * Redirect GET from http to https
  */
 
-var http = require('http');
-http.createServer(function (req, res) {
-  try {
-    let host = req.headers['host'].split(':')
-    res.writeHead(307, { "Location": "https://" + host[0] +":"+ port + req.url });
-  } catch (err) {
-    res.writeHead(307, { "Location": "https://" + process.env.HOSTNAME });
-  }
-    res.end();
-}).listen(httpPort);
+// var http = require('http');
+// http.createServer(function (req, res) {
+//   try {
+//     let host = req.headers['host'].split(':')
+//     res.writeHead(307, { "Location": "https://" + host[0] +":"+ port + req.url });
+//   } catch (err) {
+//     res.writeHead(307, { "Location": "https://" + process.env.HOSTNAME });
+//   }
+//     res.end();
+// }).listen(httpPort);
 
 /**
  * Normalize a port into a number, string, or false.

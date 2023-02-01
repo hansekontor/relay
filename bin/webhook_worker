@@ -1,3 +1,5 @@
+/* optional use
+
 #!/usr/bin/env node
 
 require('dotenv').config()
@@ -36,3 +38,4 @@ queue.on('ready', function () {
 queue.on('stalled', (jobId) => {
   console.log(`Job ${jobId} stalled and will be reprocessed`)
 })
+ */

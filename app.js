@@ -4,11 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors')
-var swaggerUi = require('swagger-ui-express'),
-    swaggerDocument = require('./swagger.json'),
-    swaggerOptions = {
-      customCss: '.swagger-ui .topbar { display: none }'
-    }
+
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const routes = require('./routes');
@@ -43,8 +39,6 @@ var corsOptions = {
 
 app.use(cors(corsOptions))
 
-// app.use('/static', express.static(path.join(__dirname, 'files')))
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/', routes)
 
 // catch 404 and forward to error handler
