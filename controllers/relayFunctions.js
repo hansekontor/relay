@@ -54,9 +54,9 @@ module.exports = {
         // calculate total fee
         let totalFeeAmount;
         if (feeType === 0) {
-            totalFeeAmount = +(totalIncomingAmount * fee).toFixed(4);
+            totalFeeAmount = totalIncomingAmount * fee;
         } else {
-            totalFeeAmount = +fee.toFixed(4);
+            totalFeeAmount = fee;
         }
 
         // divide fee across fee recipients
@@ -68,7 +68,7 @@ module.exports = {
         }
 
         // log amounts
-        console.log("incoming amount: ", totalIncomingAmount, "; added amount: ", totalFeeAmount, "; rate: ", (100*totalFeeAmount/totalIncomingAmount).toFixed(1)+"%");
+        console.log("incoming amount: ", totalIncomingAmount, "; added amount: ", totalFeeAmount.toFixed(4), "; rate: ", (100*totalFeeAmount/totalIncomingAmount).toFixed(1)+"%");
 
         // finalize changes in new query
         const newQuery = query;
