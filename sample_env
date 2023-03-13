@@ -1,6 +1,8 @@
-NODE_ENV = production
+# Use "NODE_ENV = development" in combination with "HOSTNAME = localhost". 
+# Using any other value for NODE_ENV will lead to https server creation that requires valid SSL certificates.
+NODE_ENV = development
 
-HOSTNAME = 
+HOSTNAME = localhost
 
 #PORT is HTTPS, HTTP_PORT is HTTP
 #If commented out, defaults to HTTP: 8000, HTTPS: 3000

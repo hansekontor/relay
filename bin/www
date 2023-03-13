@@ -16,25 +16,26 @@ const wsController = require('../controllers/wsController')
 
 
 /**
- * Get port from environment and store in Express.
+ * Get port from environment and store in Express and create HTTPS server
  */
 
-var port = normalizePort(process.env.HTTPS_PORT || '3000');
+const isDeveloperMode = process.env.NODE_ENV === "development";
+
+var httpPort = normalizePort(process.env.HTTP_PORT || '8000');
+var httpsPort = normalizePort(process.env.HTTPS_PORT || '3000');
+var port = isDeveloperMode ? httpPort : httpsPort;
 app.set('port', port);
-// var httpPort = normalizePort(process.env.HTTP_PORT || '8000');
-// app.set('port', httpPort);
 
-/**
- * Create HTTP server.
- */
-
-const httpsOptions = {
-  key: fs.readFileSync(process.env.SSL_PRIVKEY),
-  cert: fs.readFileSync(process.env.SSL_FULLCHAIN)
-};
-
-var server = https.createServer(httpsOptions, app);
-// var server = http.createServer(app);
+let server;
+if (isDeveloperMode) {
+  server = http.createServer(app)
+} else {
+  const httpsOptions = {
+    key: fs.readFileSync(process.env.SSL_PRIVKEY),
+    cert: fs.readFileSync(process.env.SSL_FULLCHAIN)
+  };  
+  server = https.createServer(httpsOptions, app);
+}
 
 /**
  * Handle Websocket Connections
