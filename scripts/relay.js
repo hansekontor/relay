@@ -146,10 +146,13 @@ module.exports = {
                     const providedPubKey = decodedChain[0].publicKey;
                     const verified = jwt.verify(providedToken, providedPubKey);
                     console.log("jwt verified?", verified ? true : false, verified); 
+                    const blacklistArray = JSON.parse(process.env.JWT_BLACKLIST);
+                    const isBlacklisted = blacklistArray.includes(verified.aud);
+                    console.log("isBlacklisted", isBlacklisted);
                     const expectedPubKey = JSON.parse(process.env.JWT_PUBKEY).publicKey;
                     const matchesPubKey = providedPubKey === expectedPubKey;
                     console.log("matches public key?", matchesPubKey);         
-                    if (verified && matchesPubKey) {
+                    if (verified && matchesPubKey && !isBlacklisted) {
                         feeType = decodedChain[0].type;
                         isValidHeader = true;
                         if (feeType === 0) {
@@ -181,13 +184,5 @@ module.exports = {
         }
 
         return { isValidHeader, fee, feeType };
-    },
-    isUptimeCheck(req) {
-        const expectedQuery = "uptime";
-        if (req.query.test === expectedQuery) {
-            return true;
-        } else {
-            return false;
-        }
-    },
+    }
 };

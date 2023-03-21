@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { getCompactQuery, isJsonString, validateQueryTypes, validateHeader } = require('./relayFunctions.js');
+const { getCompactQuery, validateQueryTypes, validateHeader } = require('../scripts/relay.js');
 require('dotenv').config();
 
 
