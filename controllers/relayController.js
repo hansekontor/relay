@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { getCompactQuery, validateQueryTypes, validateHeader } = require('../scripts/relay.js');
+const { getTotalAmount, getCompactQuery, validateQueryTypes, validateHeader } = require('../scripts/relay.js');
 require('dotenv').config();
 
 
@@ -26,6 +26,11 @@ function answerTypeErrors(typeErrorMsg, res) {
     return res.status(400).send(typeErrorMsg);
 }
 
+function answerExceedingAmount(amountErrorMsg, res) {
+    res.statusMessage = "Bad Request";
+    return res.status(400).send(amountErrorMsg);
+}
+
 module.exports = {
     async getPaymentRequest(req,res) {
         try {
@@ -46,8 +51,16 @@ module.exports = {
                 return answerTypeErrors(typeErrorMsg, res);
             }
 
-            // add compact amounts
-            const newQuery = getCompactQuery(req.query, isSingleRecipient, fee, feeType);
+            // validate total amount
+            const totalAmount = getTotalAmount(req.query.amount, isSingleRecipient);
+            const limit = process.env.LIMIT;
+            if (limit && totalAmount > limit) {
+                const errorMsg = `Total amount is exceeding the amount limit: ${totalAmount} > ${limit}`
+                return answerExceedingAmount(errorMsg, res);
+            }
+
+            // get new query
+            const newQuery = getCompactQuery(req.query, totalAmount, isSingleRecipient, fee, feeType);
             
             // send GET request to upstream server 
             const url = process.env.URL_UPSTREAM;
