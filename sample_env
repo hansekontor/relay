@@ -21,7 +21,7 @@ JWT_ENABLED = false
 JWT_OPTIONAL = false
 #JWT_PUBKEY = 
 JWT_BLACKLIST = []
-
+LIMIT = 100
 
 # ----- Upstream Settings -----
 URL_UPSTREAM = https://relay1.cmpct.org/v1
