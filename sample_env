@@ -17,11 +17,12 @@ SSL_FULLCHAIN = /etc/letsencrypt/live/relay1.cmpct.org/fullchain.pem
 
 # ----- Downstream Settings -----
 # To deactivate JWTs, add the JWT's "aud" property as an element of the array, for example ["merchant.com", "store.io" ]
+# The use of LIMIT restricts incoming requests to a totalAmount <= LIMIT
 JWT_ENABLED = false
 JWT_OPTIONAL = false
 #JWT_PUBKEY = 
 JWT_BLACKLIST = []
-
+#LIMIT = 1000
 
 # ----- Upstream Settings -----
 URL_UPSTREAM = https://relay1.cmpct.org/v1

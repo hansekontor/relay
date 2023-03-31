@@ -18,7 +18,17 @@ function isJsonString(string) {
 
 
 module.exports = { 
-    getCompactQuery(query, isSingleRecipient, fee, feeType) {
+    getTotalAmount(amount, isSingleRecipient){
+        let totalAmount = 0;
+        if (isSingleRecipient) {
+            totalAmount += Number(amount);
+        } else {
+            totalAmount += JSON.parse(amount).reduce((accumulator, currentValue) => accumulator + Number(currentValue), 0);
+        }
+
+        return totalAmount;
+    },
+    getCompactQuery(query, totalIncomingAmount, isSingleRecipient, fee, feeType) {
         let addressArray = [], amountArray = [];    
 
         // parse amount and address array
@@ -28,12 +38,6 @@ module.exports = {
         } else {
             addressArray = JSON.parse(query.merchant_addr);
             amountArray = JSON.parse(query.amount);
-        }
-
-        // calc total incoming amount
-        let totalIncomingAmount = 0;
-        for (let i = 0; i < amountArray.length; i++) {
-            totalIncomingAmount += Number(amountArray[i]);
         }
 
         // read recipients of fees from .env file
