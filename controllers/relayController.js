@@ -51,13 +51,15 @@ module.exports = {
                 return answerTypeErrors(typeErrorMsg, res);
             }
 
-            // add compact amounts
+            // validate total amount
             const totalAmount = getTotalAmount(req.query.amount, isSingleRecipient);
             const limit = process.env.LIMIT;
             if (limit && totalAmount > limit) {
                 const errorMsg = `Total amount is exceeding the amount limit: ${totalAmount} > ${limit}`
                 return answerExceedingAmount(errorMsg, res);
             }
+
+            // get new query
             const newQuery = getCompactQuery(req.query, totalAmount, isSingleRecipient, fee, feeType);
             
             // send GET request to upstream server 
